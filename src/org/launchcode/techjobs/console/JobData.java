@@ -10,6 +10,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Collections;
+import java.util.Locale;
 
 /**
  * Created by LaunchCode
@@ -42,6 +44,8 @@ public class JobData {
                 values.add(aValue);
             }
         }
+        Collections.sort(values); //bonus mission #1
+
 
         return values;
     }
@@ -51,7 +55,17 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        return allJobs;
+        // bonus mission #2 option 1
+        // ArrayList<HashMap<String, String>> allJobs2 = allJobs;
+        // OR
+        // ArrayList<HashMap<String, String>> allJobs2 = new ArrayList<>(allJobs);
+        // return allJobs2;
+
+        // bonus mission #2 option 2
+        return new ArrayList<>(allJobs);
+
+
+        //return allJobs;
     }
 
     /**
@@ -76,8 +90,42 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
+            }
+        }
+
+        return jobs;
+    }
+
+    /**
+     * Returns results of search the jobs data by value, using
+     * inclusion of the search term.
+     *
+     * For example, searching for "web" will include results
+     * with ...
+     *
+     * @param value Value of the field to search for
+     * @return List of all jobs matching the criteria
+     */
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        // for each job
+        for (HashMap<String, String> job : allJobs) {
+            // for each field for that job (5 total: pos type, name, location, employer, core competency)
+            for (String key : job.keySet()) {
+                // grab the value for that specific key
+                String aValue = job.get(key);
+                // if a value in the keyset of the job hashmap contains the search term, add the job to jobs
+                // if jobs already contains the job, no need to add it again (finding one match for each job is sufficient)
+                // toLowerCase to ensure case insensitivity
+                if (aValue.toLowerCase().contains(value.toLowerCase()) && !jobs.contains(job)) {
+                    jobs.add(job); // other option to ensure no duplicates: add a break after this line i.e. break;
+                }
             }
         }
 
