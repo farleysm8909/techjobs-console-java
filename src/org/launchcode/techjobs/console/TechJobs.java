@@ -123,6 +123,15 @@ public class TechJobs {
                 }
                 System.out.println("*****\n");
             }
+//            Using regular for loop
+//            for (int i = 0; i < someJobs.size(); i++) {
+//                System.out.println("*****");
+//                HashMap<String, String> job = someJobs.get(i);
+//                for (String key: job.keySet()) {
+//                    System.out.println(key + ": " + job.get(key));
+//                }
+//                System.out.println("*****\n");
+//            }
         }
     }
 }
